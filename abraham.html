@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Friday Ubulom · Full-Stack Web Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    /* ===== GLOBAL RESET & ROOT VARIABLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-deep: #0a0c12;
+      --bg-surface: #11151c;
+      --bg-card: #13161f;
+      --bg-elevated: #1a1f2a;
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --accent: #f97316;
+      --accent-soft: #ea580c;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border: #1e293b;
+      --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 18px 30px rgba(0, 0, 0, 0.5);
+      --gradient-hero: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-surface);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(10, 12, 18, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      transition: all 0.2s;
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, var(--primary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .btn-outline-nav {
+      border: 1.5px solid var(--primary);
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      background: transparent;
+      color: var(--primary);
+      font-weight: 600;
+      transition: 0.2s;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-outline-nav:hover {
+      background: var(--primary);
+      color: #0a0c12;
+      border-color: var(--primary);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .mobile-menu-btn span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-primary);
+      margin: 5px 0;
+      transition: 0.3s;
+    }
+
+    .nav-links-mobile {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      padding: 1rem 2rem 1.2rem;
+      border-top: 1px solid var(--border);
+      background: rgba(10, 12, 18, 0.98);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .nav-links-mobile.active {
+        display: flex;
+      }
+      .nav-container {
+        padding: 0.75rem 1.25rem;
+      }
+      .logo-text {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      padding: 9rem 2rem 4rem;
+      max-width: 1280px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-hero);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 40px;
+      padding: 0.3rem 1.2rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(4px);
+      color: var(--primary);
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ===== PROFILE SECTION ===== */
+    .profile-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .profile-container {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* Left Column */
+    .profile-left {
+      text-align: center;
+      position: sticky;
+      top: 100px;
+    }
+
+    .profile-photo {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 50%;
+      border: 4px solid var(--primary);
+      margin-bottom: 1.2rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      background: #1e293b;
+    }
+
+    .social-links-profile {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin: 1rem 0;
+    }
+
+    .social-links-profile a {
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .social-links-profile a:hover {
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .btn-download {
+      display: inline-block;
+      background: var(--primary);
+      color: #0a0c12;
+      padding: 0.6rem 1.8rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .btn-download:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Right Column */
+    .profile-right h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 2rem 0 0.8rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .profile-right h2::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    .profile-right h2:first-of-type {
+      margin-top: 0;
+    }
+
+    .profile-right p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Skills */
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .skill-tag {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: 0.2s;
+    }
+
+    .skill-tag:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--primary);
+      color: var(--text-primary);
+    }
+
+    /* Projects */
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      padding: 1.2rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      transition: 0.25s;
+    }
+
+    .project-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .project-card h4 {
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .project-card p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-project {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.75rem;
+      transition: 0.2s;
+      background: transparent;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-project:hover {
+      background: var(--primary);
+      color: #0a0c12;
+    }
+
+    /* Experience & Education */
+    .exp-item,
+    .edu-item {
+      background: var(--bg-card);
+      padding: 1rem 1.2rem;
+      border-radius: 0.8rem;
+      border: 1px solid var(--border);
+      margin-bottom: 0.8rem;
+      transition: 0.2s;
+    }
+
+    .exp-item:hover,
+    .edu-item:hover {
+      border-color: var(--primary);
+    }
+
+    .exp-item h4,
+    .edu-item h4 {
+      color: var(--text-primary);
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-item .meta,
+    .edu-item .meta {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .exp-item p,
+    .edu-item p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer .social-footer {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    footer .social-footer a {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      transition: color 0.2s;
+    }
+
+    footer .social-footer a:hover {
+      color: var(--primary);
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 900px) {
+      .profile-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .profile-left {
+        position: relative;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .profile-photo {
+        max-width: 200px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero {
+        padding: 7rem 1rem 2rem;
+      }
+
+      .profile-section {
+        padding: 1rem 1rem 3rem;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-right h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .profile-photo {
+        max-width: 160px;
+      }
+
+      .profile-container {
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-text">appBrew</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#directory">Directory</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact" class="btn-outline-nav"><i class="fas fa-user-plus"></i> Hire Talent</a>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-links-mobile" id="mobileNavLinks">
+      <a href="index.html">Home</a>
+      <a href="index.html#directory">Directory</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact" class="btn-outline-nav" style="display:inline-flex; width: auto;"><i class="fas fa-user-plus"></i> Hire Talent</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero">
+    <div class="badge"><i class="fas fa-user-graduate"></i> appBrew Academy · Class of 2026</div>
+    <h1>Friday Ubulom</h1>
+    <p class="subtitle">Full-Stack Web Developer · React · Node.js · Python · AWS</p>
+  </section>
+
+  <!-- ===== PROFILE CONTENT ===== -->
+  <section class="profile-section">
+    <div class="profile-container">
+
+      <!-- LEFT COLUMN: Photo & Social -->
+      <div class="profile-left">
+        <img src="https://avatars.githubusercontent.com/u/103407558?s=48&v=4" alt="Friday Ubulom" class="profile-photo" onerror="this.src='https://ui-avatars.com/api/?background=3b82f6&color=fff&name=FU'">
+
+        <div class="social-links-profile">
+          <a href="https://github.com/EkeHanson" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/ekene-onwon-abraham-4370a0228/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" target="_blank" title="Twitter / X"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" target="_blank" title="Portfolio"><i class="fas fa-globe"></i></a>
+        </div>
+
+        <a href="#" class="btn-download" download>
+          <i class="fas fa-file-pdf"></i> Download Resume
+        </a>
+      </div>
+
+      <!-- RIGHT COLUMN: Bio, Skills, Projects, Experience, Education -->
+      <div class="profile-right">
+
+        <!-- About Me -->
+        <h2>About Me</h2>
+        <p>
+          Hi, I'm Friday Ubulom — a full-stack engineer, AI enthusiast, and product builder passionate about solving real problems with technology. I build scalable web applications and love working at the intersection of innovation and practical solutions. With experience spanning frontend development, Python instruction, and backend architecture, I bring a holistic approach to software development.
+        </p>
+
+        <!-- Skills -->
+        <h2>Skills</h2>
+        <div class="skills-list">
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">MongoDB</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">GraphQL</span>
+          <span class="skill-tag">Tailwind CSS</span>
+        </div>
+
+        <!-- Projects -->
+        <h2>Projects</h2>
+        <div class="project-grid">
+          <div class="project-card">
+            <h4>E-Commerce Platform</h4>
+            <p>A full-stack e-commerce solution with real-time inventory management, payment integration, and admin dashboard built with React, Node.js, and MongoDB.</p>
+            <div class="project-links">
+              <a href="#" target="_blank" class="btn-project"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+              <a href="#" target="_blank" class="btn-project"><i class="fab fa-github"></i> Source Code</a>
+            </div>
+          </div>
+          <div class="project-card">
+            <h4>AI-Powered Chat Application</h4>
+            <p>Real-time chat application with AI-powered responses and sentiment analysis using Python, WebSocket, and TensorFlow.</p>
+            <div class="project-links">
+              <a href="#" target="_blank" class="btn-project"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+              <a href="#" target="_blank" class="btn-project"><i class="fab fa-github"></i> Source Code</a>
+            </div>
+          </div>
+          <div class="project-card">
+            <h4>Task Management System</h4>
+            <p>A collaborative task management tool with team workspaces, real-time updates, and analytics dashboard built with React and Firebase.</p>
+            <div class="project-links">
+              <a href="#" target="_blank" class="btn-project"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+              <a href="#" target="_blank" class="btn-project"><i class="fab fa-github"></i> Source Code</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience -->
+        <h2>Experience</h2>
+        <div class="exp-item">
+          <h4>Backend Architect</h4>
+          <div class="meta">Proliace Ltd · 2024 – Present</div>
+          <p>Designing and implementing robust backend architectures for enterprise applications. Building scalable microservices and optimizing system performance.</p>
+        </div>
+        <div class="exp-item">
+          <h4>Python Instructor</h4>
+          <div class="meta">Aceplora Coding Academy, Port Harcourt · 2022 – 2024</div>
+          <p>Teaching Python programming and web development to aspiring developers. Curriculum development and mentoring students through project-based learning.</p>
+        </div>
+        <div class="exp-item">
+          <h4>Frontend Developer</h4>
+          <div class="meta">NDF Lagos · 2020 – 2022</div>
+          <p>Building responsive and performant web interfaces using React.js and modern frontend technologies. Collaborating with design teams to implement pixel-perfect user experiences.</p>
+        </div>
+
+        <!-- Education -->
+        <h2>Education</h2>
+        <div class="edu-item">
+          <h4>appBrew Academy</h4>
+          <div class="meta">Full-Stack Web Development · 2025 – 2026</div>
+          <p>Intensive project-based training covering modern web technologies, software architecture, and professional development.</p>
+        </div>
+        <div class="edu-item">
+          <h4>Rivers State University</h4>
+          <div class="meta">B.Tech in Computer Science · 2020</div>
+          <p>Comprehensive education in computer science fundamentals, programming, and software engineering principles.</p>
+        </div>
+
+      </div>
+      <!-- /profile-right -->
+    </div>
+    <!-- /profile-container -->
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="social-footer">
+      <a href="https://github.com/EkeHanson" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/ekene-onwon-abraham-4370a0228/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-x-twitter"></i></a>
+      <a href="#" target="_blank"><i class="fas fa-globe"></i></a>
+    </div>
+    <p>© 2026 Friday Ubulom · appBrew Student Profile</p>
+    <p style="margin-top: 6px; font-size: 0.75rem;">
+      <i class="fas fa-code"></i> Built with ❤️ at appBrew Academy
+    </p>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // ===== MOBILE MENU TOGGLE =====
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNavLinks');
+
+    if (menuBtn && mobileNav) {
+      menuBtn.addEventListener('click', () => {
+        mobileNav.classList.toggle('active');
+        const spans = menuBtn.querySelectorAll('span');
+        if (mobileNav.classList.contains('active')) {
+          spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+          spans[1].style.opacity = '0';
+          spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+        } else {
+          spans[0].style.transform = 'none';
+          spans[1].style.opacity = '1';
+          spans[2].style.transform = 'none';
+        }
+      });
+
+      // Close mobile menu when clicking a link
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileNav.classList.remove('active');
+          if (menuBtn) {
+            const spans = menuBtn.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+          }
+        });
+      });
+    }
+
+    // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === "#" || targetId === "") return;
+        const target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ===== HANDLE MISSING IMAGES (fallback to initials) =====
+    document.querySelectorAll('.profile-photo').forEach(img => {
+      img.addEventListener('error', function() {
+        const name = document.querySelector('.hero h1')?.textContent || 'Student';
+        const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+        this.src = `https://ui-avatars.com/api/?background=3b82f6&color=fff&name=${initials}&size=200`;
+      });
+    });
+
+    // ===== LOG CONSOLE WELCOME =====
+    console.log('%c👋 Welcome to my appBrew profile!', 'font-size: 18px; font-weight: bold; color: #3b82f6;');
+    console.log('%cCheck out my projects and connect with me!', 'font-size: 14px; color: #cbd5e1;');
+  </script>
+
+</body>
+</html>
