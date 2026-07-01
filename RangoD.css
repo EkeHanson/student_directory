@@ -1,0 +1,64 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: navy;
+    padding: 15px 30px;
+}
+
+.logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: gold;
+}
+
+.a {
+    position: relative;
+    top: 20px;
+    margin-left: 1100px;
+    
+}
+
+.b{
+    position: relative;
+    top: ;
+    color: white;
+    margin-left: 20px;
+    
+}
+
+.c{
+    position: relative;
+    margin-left: 20px;
+}
+
+.profile-left{
+    border-color: black;
+}
+
+.logotext {
+    
+}
